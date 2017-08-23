@@ -9,13 +9,20 @@ import (
 )
 
 func main() {
-	data := read_tcx("input.tcx")
-	result := calculate(data)
-	json_data := Power_json(result)
-	OutputHtml("index.html", json_data)
 	//printCSV(result)
 	peaks, _ := peakdection.Findpeaks([]int{1, 5, 1, 5, 1, 5, 1, 9, 5, 1})
 	fmt.Printf("peaks = %+v\n", peaks)
+	files := GetAllFiles()
+	for _, f := range files {
+		processFile(f)
+	}
+}
+
+func processFile(filename string) {
+	data := read_tcx(filename)
+	result := calculate(data)
+	json_data := Power_json(result)
+	OutputHtml("results "+filename+".html", json_data)
 }
 
 type power struct {
