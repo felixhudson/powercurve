@@ -50,8 +50,10 @@ var myChart = new Chart(ctx, {
 </head>
 
 <body>
+<div style="width:600px">
   <canvas id="myChart" width="400" height="400"></canvas>
-  <script>
+</div>
+	<script>
 </script>
 </body>
 `
