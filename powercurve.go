@@ -19,6 +19,7 @@ func main() {
 }
 
 func processFile(filename string) {
+	fmt.Println("Processing file ", filename)
 	data := read_tcx(filename)
 	result := calculate(data)
 	json_data := Power_json(result)

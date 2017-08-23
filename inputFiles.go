@@ -17,7 +17,7 @@ func GetAllFiles() []string {
 	result := make([]string, 0)
 
 	for _, file := range files {
-		if strings.Index(file.Name(), "tcx") >= 0 {
+		if strings.Index(file.Name(), "tcx") == len(file.Name())-3 {
 			fmt.Println(file.Name())
 			result = append(result, file.Name())
 		}
