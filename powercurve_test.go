@@ -6,7 +6,7 @@ import (
 )
 
 func TestMain(t *testing.T) {
-	main()
+	//main()
 }
 
 func TestSum(t *testing.T) {
@@ -70,5 +70,5 @@ func Test_tcx(t *testing.T) {
 	if len(result) == 0 {
 		t.Fatal("didnt read any lines ")
 	}
-	
+
 }
