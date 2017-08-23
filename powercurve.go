@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/felixhudson/peakdection"
 	"io/ioutil"
 	"strconv"
 	"strings"
-	"github.com/felixhudson/peakdection"
 )
 
 func main() {
 	data := read_tcx("input.tcx")
 	result := calculate(data)
 	printCSV(result)
-	peaks, _ := peakdection.Findpeaks([]int{1,5,1,5,1,5,1,9,5,1}) 
-  fmt.Printf("peaks = %+v\n", peaks)	
+	peaks, _ := peakdection.Findpeaks([]int{1, 5, 1, 5, 1, 5, 1, 9, 5, 1})
+	fmt.Printf("peaks = %+v\n", peaks)
 }
 
 type power struct {
@@ -21,7 +21,7 @@ type power struct {
 	power float64
 }
 
-func read_tcx(name string) []power{
+func read_tcx(name string) []power {
 	byteinput, err := ioutil.ReadFile(name)
 	//input := "<Trackpoint><Time>2017-08-06T07:22:21.000Z</Time><DistanceMeters>4.0</DistanceMeters><Cadence>21</Cadence><Extensions><ns2:TPX><ns2:Speed>1.337171</ns2:Speed><ns2:Watts>37</ns2:Watts></ns2:TPX></Extensions></Trackpoint>"
 
@@ -99,6 +99,6 @@ func calculate(data []power) []power {
 func printCSV(data []power) {
 	fmt.Println("Sec,Power(watts)")
 	for _, v := range data {
-		fmt.Println(v.time,",",v.power)
+		fmt.Println(v.time, ",", v.power)
 	}
 }

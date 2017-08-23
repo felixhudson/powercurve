@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./graph"
 	"math"
 	"testing"
 )
