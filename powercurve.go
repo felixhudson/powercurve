@@ -13,7 +13,7 @@ func main() {
 	result := calculate(data)
 	json_data := Power_json(result)
 	OutputHtml("index.html", json_data)
-	printCSV(result)
+	//printCSV(result)
 	peaks, _ := peakdection.Findpeaks([]int{1, 5, 1, 5, 1, 5, 1, 9, 5, 1})
 	fmt.Printf("peaks = %+v\n", peaks)
 }
