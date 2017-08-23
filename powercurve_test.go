@@ -1,7 +1,6 @@
 package main
 
 import (
-	"./graph"
 	"math"
 	"testing"
 )
@@ -45,7 +44,7 @@ func TestAlgorithm(t *testing.T) {
 	result := calculate(testdata)
 	// expect to return the peak power output
 	expect := 9.0
-	value := result[len(result)-1].power
+	value := result[len(result)-1].Power
 	if !comparefloat(expect, value) {
 		t.Fatal("expecting", expect, "as peak power got", value)
 	}
@@ -57,7 +56,7 @@ func Test_short(t *testing.T) {
 	result := calculate(testdata)
 	// expect to return the peak power output
 	expect := 3.0
-	value := result[len(result)-1].power
+	value := result[len(result)-1].Power
 	if !comparefloat(expect, value) {
 		t.Fatal("expecting", expect, " as peak power got", value)
 	}

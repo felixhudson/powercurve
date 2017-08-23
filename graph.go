@@ -1,4 +1,4 @@
-package graph
+package main
 
 import (
 	"encoding/json"
@@ -22,7 +22,7 @@ var template = `
 <script type="text/javascript">
 window.onload=function(){
 var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chsart(ctx, {
+var myChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
@@ -76,7 +76,16 @@ type pair struct {
 	Y float64 `json:"y"`
 }
 
-func pairs_json(data []pair) string {
+func Pairs_json(data []pair) string {
+	data_json, err := json.Marshal(data)
+	if err != nil {
+		fmt.Println(err)
+	}
+	data_string := fmt.Sprintf("%s", data_json)
+	return data_string
+}
+
+func Power_json(data []power) string {
 	data_json, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err)

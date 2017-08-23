@@ -11,14 +11,16 @@ import (
 func main() {
 	data := read_tcx("input.tcx")
 	result := calculate(data)
+	json_data := Power_json(result)
+	OutputHtml("index.html", json_data)
 	printCSV(result)
 	peaks, _ := peakdection.Findpeaks([]int{1, 5, 1, 5, 1, 5, 1, 9, 5, 1})
 	fmt.Printf("peaks = %+v\n", peaks)
 }
 
 type power struct {
-	time  int
-	power float64
+	Time  int     `json:"x"`
+	Power float64 `json:"y"`
 }
 
 func read_tcx(name string) []power {
@@ -64,7 +66,7 @@ func sum(data []power) (float64, int) {
 	total := 0.0
 	count := 0
 	for _, v := range data {
-		total += v.power
+		total += v.Power
 		count++
 	}
 	return total, count
@@ -83,12 +85,12 @@ func calculate(data []power) []power {
 		//fmt.Printf("start %d and %d\n", start,end)
 		//fmt.Println(count,sum)
 		result = append(result, power{count, avg})
-		if data[start].power >= data[end].power {
-			sum = sum - data[end].power
+		if data[start].Power >= data[end].Power {
+			sum = sum - data[end].Power
 			// move the end
 			end--
 		} else {
-			sum = sum - data[start].power
+			sum = sum - data[start].Power
 			start++
 		}
 		count--
@@ -99,6 +101,6 @@ func calculate(data []power) []power {
 func printCSV(data []power) {
 	fmt.Println("Sec,Power(watts)")
 	for _, v := range data {
-		fmt.Println(v.time, ",", v.power)
+		fmt.Println(v.Time, ",", v.Power)
 	}
 }
