@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/felixhudson/peakdection"
 	"io/ioutil"
 	"strconv"
 	"strings"
+
+	"github.com/felixhudson/peakdection"
 )
 
 func main() {
@@ -21,9 +22,13 @@ func main() {
 func processFile(filename string) {
 	fmt.Println("Processing file ", filename)
 	data := read_tcx(filename)
-	result := calculate(data)
-	json_data := Power_json(result)
-	OutputHtml("results "+filename+".html", json_data)
+	if len(data) == 0 {
+		fmt.Println("Skipping file ", filename)
+	} else {
+		result := calculate(data)
+		json_data := Power_json(result)
+		OutputHtml("results "+filename+".html", json_data)
+	}
 }
 
 type power struct {
@@ -82,6 +87,9 @@ func sum(data []power) (float64, int) {
 }
 func calculate(data []power) []power {
 	result := make([]power, 0)
+	if len(data) == 0 {
+		panic("Error reading data")
+	}
 	start := 0
 	end := len(data) - 1
 	count := end
@@ -90,7 +98,7 @@ func calculate(data []power) []power {
 	for start != end {
 		avg = float64(sum) / float64(count)
 		//fmt.Printf("Best over %d is %f\n",count, avg)
-		//fmt.Printf("start %d and %d\n", start,end)
+		//fmt.Printf("start %d and %d\n", start, end)
 		//fmt.Println(count,sum)
 		result = append(result, power{count, avg})
 		if data[start].Power >= data[end].Power {
