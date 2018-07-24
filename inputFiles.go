@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-// return all tcx files in this dir
+// GetAllFiles will return all tcx files in this dir
 func GetAllFiles() []string {
-	files, err := ioutil.ReadDir(".")
+	files, err := ioutil.ReadDir("./tcx")
 	if err != nil {
 		log.Fatal(err)
 

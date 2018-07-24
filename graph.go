@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 var template = `
@@ -63,32 +64,35 @@ type pair struct {
 	Y float64 `json:"y"`
 }
 
-func Pairs_json(data []pair) string {
-	data_json, err := json.Marshal(data)
+// PairsJSON will take a pair of values and output as json
+func PairsJSON(data []pair) string {
+	dataJSON, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err)
 	}
-	data_string := fmt.Sprintf("%s", data_json)
-	return data_string
+	dataString := fmt.Sprintf("%s", dataJSON)
+	return dataString
 }
 
-func Power_json(data []power) string {
-	data_json, err := json.Marshal(data)
+// PowerJSON will reformat the data
+func PowerJSON(data []power) string {
+	dataJSON, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println(err)
 	}
-	data_string := fmt.Sprintf("%s", data_json)
-	return data_string
+	dataString := fmt.Sprintf("%s", dataJSON)
+	return dataString
 }
 
-func OutputHtml(path string, json_data string) {
-	f, err := os.Create(path)
+// OutputHTML will write the output graph
+func OutputHTML(dir string, path string, jsonData string) {
+	f, err := os.Create(filepath.Join(dir, path))
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
 	fmt.Fprintf(f, "test data")
-	fmt.Fprintf(f, template, json_data)
+	fmt.Fprintf(f, template, jsonData)
 
 }

@@ -62,13 +62,21 @@ func Test_short(t *testing.T) {
 	}
 }
 func Test_scanner(t *testing.T) {
-	read_tcx("input.tcx")
+	readTcx("input.tcx")
 }
 func Test_tcx(t *testing.T) {
-	data := read_tcx("input.tcx")
+	data := readTcx("input.tcx")
 	result := calculate(data)
 	if len(result) == 0 {
 		t.Fatal("didnt read any lines ")
 	}
 
+}
+
+func Test_split(t *testing.T) {
+	input := "<Trackpoint><Time>2018-06-25T09:40:11.000Z</Time><DistanceMeters>0.0</DistanceMeters><Cadence>0</Cadence><Extensions><ns2:TPX><ns2:Speed>0.0</ns2:Speed><ns2:Watts>0</ns2:Watts></ns2:TPX></Extensions></Trackpoint><Trackpoint><Time>2018-06-25T09:40:12.000Z</Time><DistanceMeters>0.0</DistanceMeters><Cadence>0</Cadence><Extensions><ns2:TPX><ns2:Speed>0.0</ns2:Speed><ns2:Watts>0</ns2:Watts></ns2:TPX></Extensions></Trackpoint>"
+	data := extractData([]byte(input))
+	if len(data) != 2 {
+		t.Fatal("didnt read any lines ")
+	}
 }

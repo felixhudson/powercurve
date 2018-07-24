@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 
@@ -14,6 +15,10 @@ func main() {
 	peaks, _ := peakdection.Findpeaks([]int{1, 5, 1, 5, 1, 5, 1, 9, 5, 1})
 	fmt.Printf("peaks = %+v\n", peaks)
 	files := GetAllFiles()
+	// if we have any files to process check if the output directory exists
+	if len(files) >= 1 {
+		os.Mkdir("output", 0600)
+	}
 	for _, f := range files {
 		processFile(f)
 	}
@@ -21,13 +26,13 @@ func main() {
 
 func processFile(filename string) {
 	fmt.Println("Processing file ", filename)
-	data := read_tcx(filename)
+	data := readTcx(filename)
 	if len(data) == 0 {
 		fmt.Println("Skipping file ", filename)
 	} else {
 		result := calculate(data)
-		json_data := Power_json(result)
-		OutputHtml("results "+filename+".html", json_data)
+		jsonData := PowerJSON(result)
+		OutputHTML("output", "results "+filename+".html", jsonData)
 	}
 }
 
@@ -36,16 +41,20 @@ type power struct {
 	Power float64 `json:"y"`
 }
 
-func read_tcx(name string) []power {
-	byteinput, err := ioutil.ReadFile(name)
+func readTcx(name string) []power {
+	byteinput, _ := ioutil.ReadFile(name)
 	//input := "<Trackpoint><Time>2017-08-06T07:22:21.000Z</Time><DistanceMeters>4.0</DistanceMeters><Cadence>21</Cadence><Extensions><ns2:TPX><ns2:Speed>1.337171</ns2:Speed><ns2:Watts>37</ns2:Watts></ns2:TPX></Extensions></Trackpoint>"
+	return extractData(byteinput)
+}
 
+func extractData(byteinput []byte) []power {
 	input := string(byteinput)
 	var start, end int
 	var result = make([]power, 0)
-	var val float64
+	//var val float64
 	count := 0
 	lines := strings.Split(input, "<Trackpoint>")
+	fmt.Printf("Found %d lines\n", len(lines))
 	for i := range lines {
 		count++
 		if len(lines[i]) == 0 {
@@ -54,7 +63,7 @@ func read_tcx(name string) []power {
 			start = strings.Index(lines[i], "<ns2:Watts>") + 11
 			end = strings.Index(lines[i], "</ns2:Watts>")
 			if end-1 > 0 {
-				val, err = strconv.ParseFloat(lines[i][start:end], 64)
+				val, err := strconv.ParseFloat(lines[i][start:end], 64)
 				if err == nil {
 					result = append(result, power{count, val})
 				}
