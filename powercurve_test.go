@@ -79,4 +79,8 @@ func Test_split(t *testing.T) {
 	if len(data) != 2 {
 		t.Fatal("didnt read any lines ")
 	}
+	result := calculate(data)
+	if len(result) != 1 {
+		t.Fatal("didnt process the data")
+	}
 }

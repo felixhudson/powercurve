@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -17,7 +18,7 @@ func main() {
 	files := GetAllFiles()
 	// if we have any files to process check if the output directory exists
 	if len(files) >= 1 {
-		os.Mkdir("output", 0600)
+		os.Mkdir("output", 0750)
 	}
 	for _, f := range files {
 		processFile(f)
@@ -26,7 +27,7 @@ func main() {
 
 func processFile(filename string) {
 	fmt.Println("Processing file ", filename)
-	data := readTcx(filename)
+	data := readTcx(filepath.Join("tcx", filename))
 	if len(data) == 0 {
 		fmt.Println("Skipping file ", filename)
 	} else {
@@ -54,16 +55,20 @@ func extractData(byteinput []byte) []power {
 	//var val float64
 	count := 0
 	lines := strings.Split(input, "<Trackpoint>")
-	fmt.Printf("Found %d lines\n", len(lines))
-	for i := range lines {
+	if len(lines) <= 10 {
+		fmt.Printf("Found %d lines\n", len(lines))
+		fmt.Println(input)
+		fmt.Println(byteinput)
+	}
+	for _, value := range lines {
 		count++
-		if len(lines[i]) == 0 {
+		if len(value) == 0 {
 			//fmt.Println("Read an empty line")
 		} else {
-			start = strings.Index(lines[i], "<ns2:Watts>") + 11
-			end = strings.Index(lines[i], "</ns2:Watts>")
+			start = strings.Index(value, "<ns2:Watts>") + 11
+			end = strings.Index(value, "</ns2:Watts>")
 			if end-1 > 0 {
-				val, err := strconv.ParseFloat(lines[i][start:end], 64)
+				val, err := strconv.ParseFloat(value[start:end], 64)
 				if err == nil {
 					result = append(result, power{count, val})
 				}
